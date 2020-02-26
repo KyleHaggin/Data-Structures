@@ -25,7 +25,12 @@ class LRUCache(DoublyLinkedList):
     key-value pair doesn't exist in the cache.
     """
     def get(self, key):
-        pass
+        if key in self.storage:
+            node = self.storage[key]
+            self.move_to_end(node)
+            return node.value[key]
+        else:
+            return None
 
     """
     Adds the given key-value pair to the cache. The newly-
@@ -51,12 +56,12 @@ class LRUCache(DoublyLinkedList):
         # Check to see if the chache is full
         if self.size == self.limit:
             # Remove oldest from dictionary
-            del self.storage[self.head.value[key]]
+            head_key = list(self.head.value.keys())
+            del self.storage[head_key[0]]
             # Remove oldest from LL
             self.remove_from_head()
             # Reduce the size
             self.size -= 1
-            return
 
         # Base case
         # Add to linked list
